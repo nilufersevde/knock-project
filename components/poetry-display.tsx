@@ -7,23 +7,14 @@ import { Volume2, VolumeX, Loader2, RotateCcw } from 'lucide-react'
 import Image from 'next/image'
 import { useAmbientAudio } from '@/components/audio-provider'
 
-interface SentimentAnalysis {
-  primaryEmotion: string
-  intensity: number
-  thematicConnections: string[]
-  doorMetaphor: string
-  colorPalette: string[]
-}
-
 interface PoetryDisplayProps {
   poetry: string
   reflection: string
-  sentiment: SentimentAnalysis | null
   isStreaming: boolean
   onReset: () => void
 }
 
-export function PoetryDisplay({ poetry, reflection, sentiment, isStreaming, onReset }: PoetryDisplayProps) {
+export function PoetryDisplay({ poetry, reflection, isStreaming, onReset }: PoetryDisplayProps) {
   const [isNarrating, setIsNarrating] = useState(false)
   const [isLoadingAudio, setIsLoadingAudio] = useState(false)
   const [currentWordIndex, setCurrentWordIndex] = useState(-1)
@@ -45,7 +36,7 @@ export function PoetryDisplay({ poetry, reflection, sentiment, isStreaming, onRe
   const spokenWords = words.filter(w => w.trim().length > 0)
 
   // Generate image when poetry is complete
-  const shouldGenerateImage = !isStreaming && poetry && sentiment && !generatedImage && !isGeneratingImage
+  const shouldGenerateImage = !isStreaming && poetry && !generatedImage && !isGeneratingImage
   
   useEffect(() => {
     if (shouldGenerateImage) {
@@ -61,7 +52,7 @@ export function PoetryDisplay({ poetry, reflection, sentiment, isStreaming, onRe
       const response = await fetch('/api/generate-image', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ poetry, reflection, sentiment }),
+        body: JSON.stringify({ poetry, reflection,}),
       })
 
       if (!response.ok) throw new Error('Failed to generate image')

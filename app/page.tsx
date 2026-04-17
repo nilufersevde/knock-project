@@ -13,21 +13,13 @@ import { Button } from '@/components/ui/button'
 
 type AppState = 'hero' | 'reflect' | 'result'
 
-interface SentimentResult {
-  primaryEmotion: string
-  intensity: number
-  thematicConnections: string[]
-  doorMetaphor: string
-  colorPalette: string[]
-}
-
 export default function KnockPage() {
   const [appState, setAppState] = useState<AppState>('hero')
   const [isLoading, setIsLoading] = useState(false)
   const [isStreaming, setIsStreaming] = useState(false)
   const [poetry, setPoetry] = useState('')
   const [reflection, setReflection] = useState('')
-  const [sentiment, setSentiment] = useState<SentimentResult | null>(null)
+ 
   const { isPlaying, isMuted, toggleMute, stopAmbient } = useAmbientAudio()
 
   const handleEnter = useCallback(() => {
@@ -37,23 +29,9 @@ export default function KnockPage() {
   const handleReflectionSubmit = useCallback(async (userReflection: string) => {
     setIsLoading(true)
     setPoetry('')
-    setSentiment(null)
     setReflection(userReflection)
 
     try {
-      // First, analyze sentiment
-      const sentimentResponse = await fetch('/api/analyze-sentiment', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: userReflection }),
-      })
-
-      if (!sentimentResponse.ok) {
-        throw new Error('Sentiment analysis failed')
-      }
-
-      const sentimentData = await sentimentResponse.json()
-      setSentiment(sentimentData)
 
       // Move to result state
       setAppState('result')
@@ -66,7 +44,7 @@ export default function KnockPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           reflection: userReflection,
-          emotionalContext: `${sentimentData.primaryEmotion} (intensity: ${sentimentData.intensity}), themes: ${sentimentData.thematicConnections.join(', ')}`,
+          
         }),
       })
 
@@ -98,21 +76,19 @@ export default function KnockPage() {
   }, [])
 
   const handleReset = useCallback(() => {
-    setAppState('reflect')
-    setPoetry('')
-    setReflection('')
-    setSentiment(null)
-  }, [])
+  setAppState('reflect')
+  setPoetry('')
+  setReflection('')
+}, [])
 
-  const handleBackToHome = useCallback(() => {
-    setAppState('hero')
-    setPoetry('')
-    setReflection('')
-    setSentiment(null)
-    setIsLoading(false)
-    setIsStreaming(false)
-    stopAmbient()
-  }, [stopAmbient])
+const handleBackToHome = useCallback(() => {
+  setAppState('hero')
+  setPoetry('')
+  setReflection('')
+  setIsLoading(false)
+  setIsStreaming(false)
+  stopAmbient()
+}, [stopAmbient])
 
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -161,7 +137,6 @@ export default function KnockPage() {
         <PoetryDisplay
           poetry={poetry}
           reflection={reflection}
-          sentiment={sentiment}
           isStreaming={isStreaming}
           onReset={handleReset}
         />
