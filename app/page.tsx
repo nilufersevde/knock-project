@@ -1,0 +1,179 @@
+'use client'
+
+import { useState, useCallback } from 'react'
+import { HeroSection } from '@/components/hero-section'
+import { ReflectionForm } from '@/components/reflection-form'
+import { PoetryDisplay } from '@/components/poetry-display'
+import { ContextSection } from '@/components/context-section'
+import { AboutSection } from '@/components/about-section'
+import { Footer } from '@/components/footer'
+import { useAmbientAudio } from '@/components/audio-provider'
+import { Volume2, VolumeX, Home } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+
+type AppState = 'hero' | 'reflect' | 'result'
+
+interface SentimentResult {
+  primaryEmotion: string
+  intensity: number
+  thematicConnections: string[]
+  doorMetaphor: string
+  colorPalette: string[]
+}
+
+export default function KnockPage() {
+  const [appState, setAppState] = useState<AppState>('hero')
+  const [isLoading, setIsLoading] = useState(false)
+  const [isStreaming, setIsStreaming] = useState(false)
+  const [poetry, setPoetry] = useState('')
+  const [reflection, setReflection] = useState('')
+  const [sentiment, setSentiment] = useState<SentimentResult | null>(null)
+  const { isPlaying, isMuted, toggleMute, stopAmbient } = useAmbientAudio()
+
+  const handleEnter = useCallback(() => {
+    setAppState('reflect')
+  }, [])
+
+  const handleReflectionSubmit = useCallback(async (userReflection: string) => {
+    setIsLoading(true)
+    setPoetry('')
+    setSentiment(null)
+    setReflection(userReflection)
+
+    try {
+      // First, analyze sentiment
+      const sentimentResponse = await fetch('/api/analyze-sentiment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: userReflection }),
+      })
+
+      if (!sentimentResponse.ok) {
+        throw new Error('Sentiment analysis failed')
+      }
+
+      const sentimentData = await sentimentResponse.json()
+      setSentiment(sentimentData)
+
+      // Move to result state
+      setAppState('result')
+      setIsLoading(false)
+      setIsStreaming(true)
+
+      // Then, generate poetry with streaming
+      const poetryResponse = await fetch('/api/generate-poetry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          reflection: userReflection,
+          emotionalContext: `${sentimentData.primaryEmotion} (intensity: ${sentimentData.intensity}), themes: ${sentimentData.thematicConnections.join(', ')}`,
+        }),
+      })
+
+      if (!poetryResponse.ok) {
+        throw new Error('Poetry generation failed')
+      }
+
+      const reader = poetryResponse.body?.getReader()
+      const decoder = new TextDecoder()
+
+      if (reader) {
+        let accumulatedPoetry = ''
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+          
+          const chunk = decoder.decode(value)
+          accumulatedPoetry += chunk
+          setPoetry(accumulatedPoetry)
+        }
+      }
+
+      setIsStreaming(false)
+    } catch (error) {
+      console.error('[v0] Error in generation:', error)
+      setIsLoading(false)
+      setIsStreaming(false)
+    }
+  }, [])
+
+  const handleReset = useCallback(() => {
+    setAppState('reflect')
+    setPoetry('')
+    setReflection('')
+    setSentiment(null)
+  }, [])
+
+  const handleBackToHome = useCallback(() => {
+    setAppState('hero')
+    setPoetry('')
+    setReflection('')
+    setSentiment(null)
+    setIsLoading(false)
+    setIsStreaming(false)
+    stopAmbient()
+  }, [stopAmbient])
+
+  return (
+    <main className="min-h-screen bg-background text-foreground">
+      {/* Floating buttons - only visible after entering experience */}
+      {appState !== 'hero' && (
+        <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+          {/* Home button */}
+          <Button
+            onClick={handleBackToHome}
+            variant="ghost"
+            size="icon"
+            className="w-12 h-12 rounded-full bg-card/80 backdrop-blur-sm border border-border/50 hover:bg-card hover:border-primary/50 transition-all duration-300"
+            aria-label="Back to home"
+          >
+            <Home className="w-5 h-5 text-muted-foreground hover:text-primary" />
+          </Button>
+
+          {/* Mute button - only visible when audio is playing */}
+          {isPlaying && (
+            <Button
+              onClick={toggleMute}
+              variant="ghost"
+              size="icon"
+              className="w-12 h-12 rounded-full bg-card/80 backdrop-blur-sm border border-border/50 hover:bg-card hover:border-primary/50 transition-all duration-300"
+              aria-label={isMuted ? 'Unmute ambient music' : 'Mute ambient music'}
+            >
+              {isMuted ? (
+                <VolumeX className="w-5 h-5 text-muted-foreground" />
+              ) : (
+                <Volume2 className="w-5 h-5 text-primary" />
+              )}
+            </Button>
+          )}
+        </div>
+      )}
+
+      {appState === 'hero' && (
+        <HeroSection onEnter={handleEnter} />
+      )}
+
+      {appState === 'reflect' && (
+        <ReflectionForm onSubmit={handleReflectionSubmit} isLoading={isLoading} />
+      )}
+
+      {appState === 'result' && (
+        <PoetryDisplay
+          poetry={poetry}
+          reflection={reflection}
+          sentiment={sentiment}
+          isStreaming={isStreaming}
+          onReset={handleReset}
+        />
+      )}
+
+      {appState === 'hero' && (
+        <>
+          <ContextSection />
+          <AboutSection />
+          <Footer />
+        </>
+      )}
+    </main>
+  )
+}
