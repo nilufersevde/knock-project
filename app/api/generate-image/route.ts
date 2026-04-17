@@ -4,6 +4,7 @@ import OpenAI from 'openai'
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
+console.log('KEY VALUE:', process.env.OPENAI_API_KEY) 
 
 const SYMBOLIC_SYSTEM_PROMPT = `You are the symbolic interpretation engine for an interactive AI artwork inspired by Bob Dylan's "Knockin' on Heaven's Door" and its 1973 emotional world.
 
@@ -47,6 +48,8 @@ Return ONLY valid JSON in this exact format:
 
 export async function POST(req: Request) {
   try {
+    console.log('KEY EXISTS:', !!process.env.OPENAI_API_KEY)
+    console.log('KEY PREFIX:', process.env.OPENAI_API_KEY?.slice(0, 7))
     const { poetry, reflection, sentiment } = await req.json()
 
     const emotion = sentiment?.primaryEmotion || 'reflection'
