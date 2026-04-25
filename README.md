@@ -39,28 +39,37 @@ This project combines two distinct AI techniques:
 
 These techniques are connected through a **custom pipeline**, not used independently.
 
+## 🤖 Models Used
+
+- **GPT-4o-mini** → poem generation and symbolic interpretation  
+- **gpt-image-1** → image generation  
+
+The system uses separate model calls for:
+- semantic interpretation (text)
+- visual rendering (image)
 ---
 
-## 🔁 Pipeline Overview
-
-
-User Input (reflection)
-
-        ↓
-
-Symbolic Interpretation (LLM → structured scene)
-
-        ↓
-
-Poem Generation (LLM, streaming)
-
-        ↓
-
-Image Prompt Construction
-
-        ↓
-        
-Image Generation (diffusion model)
+## 🧭 System Architecture
+```text
+User Input (Reflection)
+↓
+Frontend (React / Next.js)
+↓
+API Route: /generate-poetry
+↓
+LLM (GPT-4o-mini)
+→ Generates poem (streamed)
+↓
+API Route: /generate-image
+↓
+LLM (GPT-4o-mini)
+→ Constructs symbolic scene (JSON)
+↓
+Image Model (gpt-image-1)
+→ Generates final image
+↓
+Frontend displays result
+```
 
 **Key idea:**  
 The system constructs meaning first, then generates visuals.
@@ -120,16 +129,16 @@ the film Pat Garrett & Billy the Kid
 
 Themes include:
 
-farewell
-release
-identity loss
-transition
+- farewell
+- release
+- identity loss
+- transition
 
 Rather than direct references, the historical context is embedded through:
 
-visual tone
-materials
-atmosphere
+- visual tone
+- materials
+- atmosphere
 
 ---
 
@@ -137,9 +146,9 @@ atmosphere
 
 In this project, AI acts as:
 
-Interpreter → transforms text into symbolic meaning
-Generator → produces poem and image
-Collaborator → participates in shaping the final output
+- Interpreter → transforms text into symbolic meaning
+- Generator → produces poem and image
+- Collaborator → participates in shaping the final output
 
 The structure, constraints, and pipeline are manually designed.
 
