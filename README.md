@@ -108,6 +108,8 @@ Open:
 
 http://localhost:3000
 
+```
+
 🕰️ Historical Context
 
 The project is inspired by:
