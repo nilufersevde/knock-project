@@ -134,7 +134,7 @@ lib/
 
 📸 Example Output
 
-Screenshot 2026-04-25 at 18.14.13.png
+screenshots/Screenshot 2026-04-25 at 18.14.13.png
 
 👤 Author
 
