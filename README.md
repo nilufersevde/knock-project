@@ -109,6 +109,7 @@ Open:
 http://localhost:3000
 
 ```
+--- 
 
 🕰️ Historical Context
 
@@ -129,6 +130,9 @@ Rather than direct references, the historical context is embedded through:
 visual tone
 materials
 atmosphere
+
+---
+
 🧠 AI as a System
 
 In this project, AI acts as:
@@ -139,11 +143,15 @@ Collaborator → participates in shaping the final output
 
 The structure, constraints, and pipeline are manually designed.
 
+---
+
 📸 Example Output
 
 ![Example Output](screenshots/home.png)
 ![Example Output](screenshots/reflect.png)
 ![Example Output](screenshots/poem_image.png)
+
+--- 
 
 👤 Author
 
