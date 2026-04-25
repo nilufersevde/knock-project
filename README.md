@@ -133,8 +133,9 @@ lib/
 
 
 📸 Example Output
-
-screenshots/Screenshot 2026-04-25 at 18.14.13.png
+![Example Output](screenshots/home.png)
+![Example Output](screenshots/reflect.png)
+![Example Output](screenshots/poem_image.png)
 
 👤 Author
 
