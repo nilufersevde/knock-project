@@ -1,5 +1,9 @@
 # KNOCK — Design Your Door
 
+## 🚀 Live Demo
+
+👉 https://knock-project.vercel.app
+
 **CSE 358 — Introduction to Artificial Intelligence**
 
 An interactive AI artwork that transforms a user’s personal reflection into a symbolic image and a short poem, inspired by *Bob Dylan’s “Knockin’ on Heaven’s Door” (1973)*.
