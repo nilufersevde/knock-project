@@ -134,9 +134,7 @@ lib/
 
 📸 Example Output
 
-/Users/nilufersevdeozdemir/Desktop/Screenshot 2026-04-25 at 18.15.34.png
-/Users/nilufersevdeozdemir/Desktop/Screenshot 2026-04-25 at 18.14.28.png
-/Users/nilufersevdeozdemir/Desktop/Screenshot 2026-04-25 at 18.14.13.png
+Screenshot 2026-04-25 at 18.14.13.png
 
 👤 Author
 
