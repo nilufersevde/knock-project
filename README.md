@@ -87,8 +87,8 @@ The system constructs meaning first, then generates visuals.
 
 ## 🛠️ Installation
 
-### 1. Clone the repository
 ```bash
+1. Clone the repository
 git clone https://github.com/nilufersevde/knock-project.git
 cd knock-project
 2. Install dependencies
@@ -111,7 +111,7 @@ http://localhost:3000
 ```
 --- 
 
-🕰️ Historical Context
+## 🕰️ Historical Context
 
 The project is inspired by:
 
@@ -133,7 +133,7 @@ atmosphere
 
 ---
 
-🧠 AI as a System
+## 🧠 AI as a System
 
 In this project, AI acts as:
 
@@ -145,7 +145,7 @@ The structure, constraints, and pipeline are manually designed.
 
 ---
 
-📸 Example Output
+## 📸 Example Output
 
 ![Example Output](screenshots/home.png)
 ![Example Output](screenshots/reflect.png)
@@ -153,7 +153,7 @@ The structure, constraints, and pipeline are manually designed.
 
 --- 
 
-👤 Author
+## 👤 Author
 
 Nilüfer Sevde Özdemir
 
