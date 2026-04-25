@@ -80,6 +80,7 @@ pnpm dev
 Open:
 
 http://localhost:3000
+
 🎨 Design Choices
 No explicit war imagery
 No visible human figures in images
@@ -90,6 +91,7 @@ The project focuses on:
 
 what is left behind
 not who leaves
+
 🕰️ Historical Context
 
 The project is inspired by:
@@ -107,6 +109,7 @@ Rather than direct references, the historical context is embedded through:
 visual tone
 materials
 atmosphere
+
 🧠 AI as a System
 
 In this project, AI acts as:
@@ -127,9 +130,13 @@ components/
 lib/
   poetry-prompt.ts
   image-prompt.ts
+
+
 📸 Example Output
 
-(Add screenshots here before submission)
+/Users/nilufersevdeozdemir/Desktop/Screenshot 2026-04-25 at 18.15.34.png
+/Users/nilufersevdeozdemir/Desktop/Screenshot 2026-04-25 at 18.14.28.png
+/Users/nilufersevdeozdemir/Desktop/Screenshot 2026-04-25 at 18.14.13.png
 
 👤 Author
 
@@ -140,5 +147,5 @@ MD + MSc Computer Science Engineering
 
 This project is not about generating content.
 
-It is about translating a moment of transition into a symbolic scene —
+It is about translating a moment of transition into a symbolic scene, 
 the moment just before crossing a door.
