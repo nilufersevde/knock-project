@@ -4,9 +4,6 @@ import { useState, useCallback } from 'react'
 import { HeroSection } from '@/components/hero-section'
 import { ReflectionForm } from '@/components/reflection-form'
 import { PoetryDisplay } from '@/components/poetry-display'
-import { ContextSection } from '@/components/context-section'
-import { AboutSection } from '@/components/about-section'
-import { Footer } from '@/components/footer'
 import { useAmbientAudio } from '@/components/audio-provider'
 import { Volume2, VolumeX, Home } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -140,14 +137,6 @@ const handleBackToHome = useCallback(() => {
           isStreaming={isStreaming}
           onReset={handleReset}
         />
-      )}
-
-      {appState === 'hero' && (
-        <>
-          <ContextSection />
-          <AboutSection />
-          <Footer />
-        </>
       )}
     </main>
   )
